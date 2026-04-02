@@ -8,3 +8,4 @@ services:
       - NODE_ENV=production
     volumes:
       - ./logs:/app/logs
+    network_mode: "host"
