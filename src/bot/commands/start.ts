@@ -17,7 +17,7 @@ export default async function onStart(bot: TelegramBot, msg: Message): Promise<v
 Для полного списка команд и дополнительной информации используйте /help
 
 *🛠️ Разработчики:*
-@Subarash\\_ii • @ByteMe6 • @ArchiPank
+@Subarash\\_ii • @Samedy_y • @ArchiPank
 `;
 
   await bot.sendSticker(msg.chat.id, "CAACAgIAAxkBAAE-NAVpIb_kUswE4rTMPRRfSjvOTsXS_AACZ4EAAulSIUtSawUNN0GDCzYE");
