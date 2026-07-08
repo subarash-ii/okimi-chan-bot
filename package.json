@@ -1,5 +1,19 @@
 {
   "name": "okimi-chan-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot that renders osu! player stats into shareable profile card images",
+  "keywords": [
+    "telegram-bot",
+    "osu",
+    "osu-api",
+    "playwright",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subarash-ii/okimi-chan-bot.git"
+  },
+  "license": "MIT",
   "main": "src/index.ts",
   "type": "commonjs",
   "private": false,
