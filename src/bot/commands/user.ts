@@ -17,7 +17,12 @@ export default async function onUser(bot: TelegramBot, msg: Message, match: RegE
   const user = await getUser(username);
 
   if (!user) {
-    await bot.sendMessage(msg.chat.id, `Пользователь *${ username.replaceAll("*", "\\*") }* не найден`, { parse_mode: "MarkdownV2" });
+    const safeUsername = username
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+
+    await bot.sendMessage(msg.chat.id, `Пользователь <b>${ safeUsername }</b> не найден`, { parse_mode: "HTML" });
     await bot.deleteMessage(msg.chat.id, sent.message_id);
 
     return;
