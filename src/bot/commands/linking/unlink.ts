@@ -17,8 +17,13 @@ export default async function onUnlink(bot: TelegramBot, msg: Message): Promise<
     return await bot.sendMessage(msg.chat.id, `Ваш Telegram-аккаунт @${ tgName } не привязан к osu! профилю.`);
   }
 
-  const question = await bot.sendMessage(msg.chat.id, `**⚠️ Вы действительно хотите отвязать Telegram-аккаунт от osu! профиля** ${ candidate.osuName }**?**`, {
-    parse_mode: "Markdown",
+  const osuSafeName = candidate.osuName
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  const question = await bot.sendMessage(msg.chat.id, `<b>⚠️ Вы действительно хотите отвязать Telegram-аккаунт от osu! профиля</b> ${ osuSafeName }<b>?</b>`, {
+    parse_mode: "HTML",
     reply_to_message_id: msg.message_id,
     reply_markup: {
       inline_keyboard: [
