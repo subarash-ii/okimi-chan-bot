@@ -16,16 +16,27 @@ export default async function onLink(bot: TelegramBot, msg: Message, match: RegE
   const user = await getUser(osuName);
 
   if (!user) {
-    return await bot.sendMessage(msg.chat.id, `Пользователь *${ osuName }* не найден.`, { parse_mode: "Markdown" });
+
+    const osuSafeName = osuName
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+
+    return await bot.sendMessage(msg.chat.id, `Пользователь <b>${ osuSafeName }</b> не найден.`, { parse_mode: "HTML" });
   }
 
   await Link.deleteOne({ tgName });
 
   await Link.create({ tgName, osuName: user.username });
 
+  const osuSafeName = user.username
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
   await bot.sendMessage(
       msg.chat.id,
-      `Аккаунт @${ tgName } успешно привязан к *${ user.username }*. Профиль доступен по команде /me.`, { parse_mode: "Markdown" }
+      `Аккаунт @${ tgName } успешно привязан к <b>${ osuSafeName }</b>. Профиль доступен по команде /me.`, { parse_mode: "HTML" }
   );
 
   log("INFO", `${ tgName } linked his account to ${ user.username }`);

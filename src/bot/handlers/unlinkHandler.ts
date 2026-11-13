@@ -25,7 +25,12 @@ export default async function unlinkHandler(bot: TelegramBot, query: CallbackQue
     return;
   }
 
-  await bot.sendMessage(query.message.chat.id, `**Привязка успешно удалена.** Ваш Telegram-аккаунт больше не связан с профилем *${ osuName }*.`, { parse_mode: "Markdown" });
+  const osuSafeName = osuName
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+  await bot.sendMessage(query.message.chat.id, `<b>Привязка успешно удалена.</b> Ваш Telegram-аккаунт больше не связан с профилем <b>${ osuSafeName }</b>.`, { parse_mode: "HTML" });
 
   log("INFO", `${ tgName } unlinked his account from ${ osuName }`);
 }
