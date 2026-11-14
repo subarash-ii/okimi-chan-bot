@@ -7,6 +7,7 @@ import onUser from "./bot/commands/user";
 import onLink from "./bot/commands/linking/link";
 import onUnlink from "./bot/commands/linking/unlink";
 import onMe from "./bot/commands/linking/me";
+import onCallback from "./bot/callback/callbackHandler.ts";
 
 if (!config.BOT_TOKEN) {
   log("ERROR", "No bot token");
@@ -28,3 +29,5 @@ bot.onText(/\/user(?: (.+))?/, async (msg, match) => await onUser(bot, msg, matc
 bot.onText(/\/link(?: (.+))?/, async (msg, match) => await onLink(bot, msg, match));
 bot.onText(/\/unlink/, async (msg) => await onUnlink(bot, msg));
 bot.onText(/\/me/, async (msg) => await onMe(bot, msg));
+
+bot.on("callback_query", async (query) => await onCallback(bot, query));
