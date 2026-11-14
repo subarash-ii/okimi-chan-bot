@@ -3,6 +3,7 @@ import type { Message } from "node-telegram-bot-api";
 import Link from "../../../db/models/Link.ts";
 import getUser from "../../../services/osu/getUser.ts";
 import log from "../../../services/logs/logger.ts";
+import cleanUpFormatting from "../../utils/cleanUpFormatting.ts";
 
 export default async function onLink(bot: TelegramBot, msg: Message, match: RegExpExecArray | null): Promise<Message | undefined> {
   const tgName = msg.from?.username;
@@ -16,16 +17,21 @@ export default async function onLink(bot: TelegramBot, msg: Message, match: RegE
   const user = await getUser(osuName);
 
   if (!user) {
-    return await bot.sendMessage(msg.chat.id, `Пользователь *${ osuName }* не найден.`, { parse_mode: "Markdown" });
+
+    const osuSafeName = cleanUpFormatting(osuName);
+
+    return await bot.sendMessage(msg.chat.id, `Пользователь <b>${ osuSafeName }</b> не найден.`, { parse_mode: "HTML" });
   }
 
   await Link.deleteOne({ tgName });
 
   await Link.create({ tgName, osuName: user.username });
 
+  const osuSafeName = cleanUpFormatting(user.username)
+
   await bot.sendMessage(
       msg.chat.id,
-      `Аккаунт @${ tgName } успешно привязан к *${ user.username }*. Профиль доступен по команде /me.`, { parse_mode: "Markdown" }
+      `Аккаунт @${ tgName } успешно привязан к <b>${ osuSafeName }</b>. Профиль доступен по команде /me.`, { parse_mode: "HTML" }
   );
 
   log("INFO", `${ tgName } linked his account to ${ user.username }`);

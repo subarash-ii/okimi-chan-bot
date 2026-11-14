@@ -68,7 +68,7 @@ Pushes to `master` are deployed automatically via [GitHub Actions](.github/workf
 
 ## Developers
 
-[@Subarash\_ii](https://t.me/Subarash_ii) · [@Samedy\_y](https://t.me/Samedy_y) · [@paarvex](https://t.me/paarvex)
+[@Subarash\_ii](https://t.me/Subarash_ii) · [@Samedy\_y](https://t.me/Samedy_y) · [@paarvexx](https://t.me/paarvexx)
 
 ## License
 
