@@ -3,6 +3,7 @@ import type { Message } from "node-telegram-bot-api";
 import Link from "../../../db/models/Link.ts";
 import getUser from "../../../services/osu/getUser.ts";
 import log from "../../../services/logs/logger.ts";
+import cleanUpFormatting from "../../utils/cleanUpFormatting.ts";
 
 export default async function onLink(bot: TelegramBot, msg: Message, match: RegExpExecArray | null): Promise<Message | undefined> {
   const tgName = msg.from?.username;
@@ -17,10 +18,7 @@ export default async function onLink(bot: TelegramBot, msg: Message, match: RegE
 
   if (!user) {
 
-    const osuSafeName = osuName
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;");
+    const osuSafeName = cleanUpFormatting(osuName);
 
     return await bot.sendMessage(msg.chat.id, `Пользователь <b>${ osuSafeName }</b> не найден.`, { parse_mode: "HTML" });
   }
@@ -29,10 +27,7 @@ export default async function onLink(bot: TelegramBot, msg: Message, match: RegE
 
   await Link.create({ tgName, osuName: user.username });
 
-  const osuSafeName = user.username
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
+  const osuSafeName = cleanUpFormatting(user.username)
 
   await bot.sendMessage(
       msg.chat.id,
