@@ -3,7 +3,7 @@ import TelegramBot from "node-telegram-bot-api";
 import Link from "../../../db/models/Link.ts";
 import { Queries } from "../../queries.ts";
 import unlinkHandler from "../../handlers/unlinkHandler.ts";
-import cleanUpFormatting from "../../utils/cleanUpFormatting.ts";
+import escapeHtml from "../../utils/escapeHtml.ts";
 
 export default async function onUnlink(bot: TelegramBot, msg: Message): Promise<Message | undefined> {
   const tgName = msg.from?.username;
@@ -18,7 +18,7 @@ export default async function onUnlink(bot: TelegramBot, msg: Message): Promise<
     return await bot.sendMessage(msg.chat.id, `Ваш Telegram-аккаунт @${ tgName } не привязан к osu! профилю.`);
   }
 
-  const osuSafeName = cleanUpFormatting(candidate.osuName);
+  const osuSafeName = escapeHtml(candidate.osuName);
 
   const question = await bot.sendMessage(msg.chat.id, `<b>⚠️ Вы действительно хотите отвязать Telegram-аккаунт от osu! профиля</b> ${ osuSafeName }<b>?</b>`, {
     parse_mode: "HTML",
