@@ -3,7 +3,7 @@ import getUser from "../../services/osu/getUser";
 import renderImage from "../../services/render/renderImage.ts";
 import createData from "../../services/render/createData.ts";
 import sendPhoto from "../sendPhoto.ts";
-import cleanUpFormatting from "../utils/cleanUpFormatting.ts";
+import escapeHtml from "../utils/escapeHtml.ts";
 
 export default async function onUser(bot: TelegramBot, msg: Message, match: RegExpExecArray | null): Promise<void | undefined> {
   const username = match && match[1] ? match[1].trim() : null;
@@ -18,7 +18,7 @@ export default async function onUser(bot: TelegramBot, msg: Message, match: RegE
   const user = await getUser(username);
 
   if (!user) {
-    const safeUsername = cleanUpFormatting(username);
+    const safeUsername = escapeHtml(username);
 
     await bot.sendMessage(msg.chat.id, `Пользователь <b>${ safeUsername }</b> не найден`, { parse_mode: "HTML" });
     await bot.deleteMessage(msg.chat.id, sent.message_id);

@@ -1,7 +1,7 @@
 import TelegramBot, { type CallbackQuery } from "node-telegram-bot-api";
 import Link from "../../db/models/Link.ts";
 import log from "../../services/logs/logger.ts";
-import cleanUpFormatting from "../utils/cleanUpFormatting.ts";
+import escapeHtml from "../utils/escapeHtml.ts";
 
 export default async function unlinkHandler(bot: TelegramBot, query: CallbackQuery) {
   await bot.answerCallbackQuery(query.id);
@@ -26,7 +26,7 @@ export default async function unlinkHandler(bot: TelegramBot, query: CallbackQue
     return;
   }
 
-  const osuSafeName = cleanUpFormatting(osuName);
+  const osuSafeName = escapeHtml(osuName);
   
   await bot.sendMessage(query.message.chat.id, `<b>Привязка успешно удалена.</b> Ваш Telegram-аккаунт больше не связан с профилем <b>${ osuSafeName }</b>.`, { parse_mode: "HTML" });
 
