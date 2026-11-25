@@ -15,8 +15,10 @@ export default async function onLink(bot: TelegramBot, msg: Message, match: RegE
 
   const user = await getUser(osuName);
 
-  if (!user) {
+  if (user === null) {
     return await bot.sendMessage(msg.chat.id, `Пользователь *${ osuName }* не найден.`, { parse_mode: "Markdown" });
+  } else if (user === undefined) {
+    return await bot.sendMessage(msg.chat.id, "Ошибка при запросе к osu! API. Попробуйте снова позже.");
   }
 
   await Link.deleteOne({ tgName });
