@@ -1,7 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
 import type { CallbackQuery } from "node-telegram-bot-api";
 import type { Message } from "node-telegram-bot-api";
-import { Queries } from "../queries.ts";
+import { Queries } from "./queries.ts";
 import Link from "../../db/models/Link.ts";
 import log from "../../services/logs/logger.ts";
 

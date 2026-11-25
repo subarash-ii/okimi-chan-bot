@@ -1,7 +1,7 @@
 import type { Message } from "node-telegram-bot-api";
 import TelegramBot from "node-telegram-bot-api";
 import Link from "../../../db/models/Link.ts";
-import { Queries } from "../../queries.ts";
+import { Queries } from "../../callback/queries.ts";
 
 export default async function onUnlink(bot: TelegramBot, msg: Message): Promise<Message | undefined> {
   const tgName = msg.from?.username;
