@@ -16,13 +16,19 @@ export default async function onUser(bot: TelegramBot, msg: Message, match: RegE
 
   const user = await getUser(username);
 
-  if (!user) {
+  if (user === null) {
     const safeUsername = username
       .replaceAll("&", "&amp;")
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;");
 
     await bot.sendMessage(msg.chat.id, `Пользователь <b>${ safeUsername }</b> не найден`, { parse_mode: "HTML" });
+    await bot.deleteMessage(msg.chat.id, sent.message_id);
+
+    return;
+
+  } else if (user === undefined) {
+    await bot.sendMessage(msg.chat.id, "Ошибка при запросе к osu! API. Попробуйте снова позже.");
     await bot.deleteMessage(msg.chat.id, sent.message_id);
 
     return;

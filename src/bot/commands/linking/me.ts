@@ -25,7 +25,10 @@ export default async function onMe(bot: TelegramBot, msg: Message): Promise<bool
 
   const user = await getUser(osuName);
 
-  if (!user) {
+  if (user === null) {
+    return await bot.deleteMessage(msg.chat.id, sent.message_id);
+  } else if (user === undefined) {
+    await bot.sendMessage(msg.chat.id, "Ошибка при запросе к osu! API. Попробуйте снова позже.");
     return await bot.deleteMessage(msg.chat.id, sent.message_id);
   }
 
