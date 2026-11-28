@@ -5,20 +5,33 @@
 **Telegram bot that renders osu! player stats into shareable profile card images.**
 
 [![Telegram](https://img.shields.io/badge/Telegram-26A5E4?logo=telegram&logoColor=white)](https://t.me/okimi_chan_bot)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com)
-[![License: MIT](https://img.shields.io/badge/License%3A%20MIT-green)](./LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-blueviolet)](#-contributing)
 
-[Overview](#overview) · [Commands](#commands) · [Installation](#installation) · [Configuration](#configuration) · [License](#license)
+[Commands](#-commands) · [Installation](#-installation) · [Configuration](#-configuration) · [Contributing](#-contributing)
 
 </div>
 
-## Overview
+---
 
-The bot fetches player data from the osu! API v2 and renders it into a JPEG stat card (pp, global and country rank, accuracy, level, playcount). Cards are generated from an HTML/CSS template with Handlebars and screenshotted by headless Chromium (Playwright). Rendered images are uploaded to a cache chat once and re-served via Telegram `file_id`. Account links (Telegram user → osu! username) are stored in MongoDB.
+## About
 
-## Commands
+Okimi-Chan fetches player data from the osu! API v2 and renders it into a JPEG stat card — pp, global and country rank, accuracy, level, playcount. Cards are generated from an HTML/CSS template with Handlebars and screenshotted by headless Chromium (Playwright). Rendered images are uploaded to a cache chat once and re-served via Telegram `file_id`. Account links (Telegram user → osu! username) are stored in MongoDB.
+
+## Features
+
+| Feature | What it does |
+|---|---|
+| Stat cards | A full osu! profile rendered as a single shareable JPEG image |
+| Inline mode | `@okimi_chan_bot <username>` works in any chat, no commands needed |
+| Account linking | Link your Telegram account to osu! once, then just `/me` |
+| Cached images | Every card is rendered once and re-served via Telegram `file_id` |
+| Zero-setup deployment | Bot and MongoDB both run in Docker Compose |
+
+## 🎮 Commands
 
 | Command | Description |
 |---|---|
@@ -28,20 +41,21 @@ The bot fetches player data from the osu! API v2 and renders it into a JPEG stat
 | `/unlink` | Remove the link |
 | `/help` | Command reference |
 
-Inline mode: `@okimi_chan_bot <username>` works in any chat.
+> [!TIP]
+> Try the bot right away: [@okimi_chan_bot](https://t.me/okimi_chan_bot)
 
 ## Requirements
 
 - Node.js 20+ (or Docker)
-- Telegram bot token ([@BotFather](https://t.me/BotFather))
+- Telegram bot token from [@BotFather](https://t.me/BotFather)
 - osu! OAuth client ([account settings → OAuth](https://osu.ppy.sh/home/account/edit#oauth))
 
 > [!NOTE]
 > MongoDB is not required on the host — it runs as a container alongside the bot via Docker Compose.
 
-## Installation
+## 📦 Installation
 
-### Docker (recommended)
+### Method 1 — Docker (recommended)
 
 ```bash
 git clone https://github.com/subarash-ii/okimi-chan-bot.git
@@ -49,15 +63,15 @@ cd okimi-chan-bot
 touch .env
 ```
 
-Fill in the [environment variables](#configuration) in `.env`, then start both containers:
+Fill in the [environment variables](#-configuration) in `.env`, then start both containers:
 
 ```bash
 docker compose up --build -d
 ```
 
-The image is based on the official Playwright image, so Chromium is preinstalled. Pushes to `master` are deployed automatically via [GitHub Actions](.github/workflows/deploy.yml).
+The bot image is based on the official Playwright image, so Chromium is preinstalled. Pushes to `master` are deployed automatically via [GitHub Actions](.github/workflows/deploy.yml).
 
-### Manual
+### Method 2 — run from source
 
 ```bash
 git clone https://github.com/subarash-ii/okimi-chan-bot.git
@@ -74,18 +88,22 @@ npm start      # production
 npm run dev    # watch mode
 ```
 
-## Configuration
+## ⚙️ Configuration
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root. All five variables below are required:
 
-| Variable | Description | Required |
-|---|---|---|
-| `BOT_TOKEN` | Telegram bot token from [@BotFather](https://t.me/BotFather) | ✅ |
-| `OSU_CLIENT_ID` | osu! OAuth client ID | ✅ |
-| `OSU_CLIENT_SECRET` | osu! OAuth client secret | ✅ |
-| `DB_URI` | MongoDB connection string. In Docker it defaults to `mongodb://mongo:27017/okimi-chan` | ✅ |
-| `CACHE_CHAT_ID` | Chat ID used to cache rendered cards | ✅ |
+| Variable | Description |
+|---|---|
+| `BOT_TOKEN` | Telegram bot token from [@BotFather](https://t.me/BotFather) |
+| `OSU_CLIENT_ID` | osu! OAuth client ID |
+| `OSU_CLIENT_SECRET` | osu! OAuth client secret |
+| `DB_URI` | MongoDB connection string. In Docker it defaults to `mongodb://mongo:27017/okimi-chan` |
+| `CACHE_CHAT_ID` | Chat ID used to cache rendered cards |
+
+## 🤝 Contributing
+
+Issues and pull requests are welcome — fork the repo, make your changes and open a PR.
 
 ## License
 
-Distributed under the [MIT](LICENSE) license.
+Distributed under the [MIT](./LICENSE) license. © 2025 Maksym Ryaboshapka
